@@ -1,524 +1,865 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Definición, usos y construcción de proyectos web y REST con Spring</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Definición, usos y construcción de proyectos web y REST con Spring
+    </title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH"
+      crossorigin="anonymous"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css"
+      rel="stylesheet"
+    />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css"
+    />
 
     <style>
-        body {
-            padding-top: 20px;
-            background-color: #f0f2f5;
-        }
-        .container {
-            max-width: 1000px;
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-        }
-        .table-responsive {
-            margin-top: 20px;
-        }
-        .form-control-sm {
-            height: calc(1.5em + 0.5rem + 2px);
-            padding: 0.25rem 0.5rem;
-            font-size: .875rem;
-            border-radius: 0.2rem;
-        }
-        .btn-sm {
-            padding: 0.25rem 0.5rem;
-            font-size: .875rem;
-            border-radius: 0.2rem;
-        }
-        .swal2-container {
-            z-index: 2000;
-        }
-        .nav-tabs .nav-link {
-            font-weight: bold;
-            color: #495057;
-        }
-        .nav-tabs .nav-link.active {
-            color: #0d6efd;
-            background-color: #e9ecef;
-            border-color: #dee2e6 #dee2e6 #fff;
-        }
-        .form-floating label {
-            padding-left: 0.75rem;
-            padding-right: 0.75rem;
-        }
-        .search-controls {
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        .pagination-controls {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            gap: 10px;
-            margin-top: 15px;
-        }
-        #movimientoProductoModal .modal-body {
-            max-height: 70vh;
-            overflow-y: auto;
-        }
-        .cliente-photo {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 50%;
-        }
+      body {
+        padding-top: 20px;
+        background-color: #f0f2f5;
+      }
+      .container {
+        max-width: 1000px;
+        background-color: #ffffff;
+        padding: 30px;
+        border-radius: 10px;
+        box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      }
+      .table-responsive {
+        margin-top: 20px;
+      }
+      .form-control-sm {
+        height: calc(1.5em + 0.5rem + 2px);
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        border-radius: 0.2rem;
+      }
+      .btn-sm {
+        padding: 0.25rem 0.5rem;
+        font-size: 0.875rem;
+        border-radius: 0.2rem;
+      }
+      .swal2-container {
+        z-index: 2000;
+      }
+      .nav-tabs .nav-link {
+        font-weight: bold;
+        color: #495057;
+      }
+      .nav-tabs .nav-link.active {
+        color: #0d6efd;
+        background-color: #e9ecef;
+        border-color: #dee2e6 #dee2e6 #fff;
+      }
+      .form-floating label {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+      }
+      .search-controls {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+      }
+      .pagination-controls {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        gap: 10px;
+        margin-top: 15px;
+      }
+      #movimientoProductoModal .modal-body {
+        max-height: 70vh;
+        overflow-y: auto;
+      }
+      .cliente-photo {
+        width: 50px;
+        height: 50px;
+        object-fit: cover;
+        border-radius: 50%;
+      }
     </style>
-</head>
-<body>
-<div class="container">
-    <h2 class="mb-4 text-center">Construcción de un proyecto web y REST con Spring para realizar Operaciones CRUD a una base de datos MySQL</h2>
+  </head>
+  <body>
+    <div class="container">
+      <h2 class="mb-4 text-center">
+        Construcción de un proyecto web y REST con Spring para realizar
+        Operaciones CRUD a una base de datos MySQL
+      </h2>
 
-    <ul class="nav nav-tabs" id="myTab" role="tablist">
+      <ul class="nav nav-tabs" id="myTab" role="tablist">
         <li class="nav-item" role="presentation">
-            <button class="nav-link active" id="productos-tab" data-bs-toggle="tab" data-bs-target="#productos" type="button" role="tab" aria-controls="productos" aria-selected="true">Productos</button>
+          <button
+            class="nav-link active"
+            id="productos-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#productos"
+            type="button"
+            role="tab"
+            aria-controls="productos"
+            aria-selected="true"
+          >
+            Productos
+          </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="clientes-tab" data-bs-toggle="tab" data-bs-target="#clientes" type="button" role="tab" aria-controls="clientes" aria-selected="false">Clientes</button>
+          <button
+            class="nav-link"
+            id="clientes-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#clientes"
+            type="button"
+            role="tab"
+            aria-controls="clientes"
+            aria-selected="false"
+          >
+            Clientes
+          </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="ventas-tab" data-bs-toggle="tab" data-bs-target="#ventas" type="button" role="tab" aria-controls="ventas" aria-selected="false">Ventas</button>
+          <button
+            class="nav-link"
+            id="ventas-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#ventas"
+            type="button"
+            role="tab"
+            aria-controls="ventas"
+            aria-selected="false"
+          >
+            Ventas
+          </button>
         </li>
         <li class="nav-item" role="presentation">
-            <button class="nav-link" id="reporteventas-tab" data-bs-toggle="tab" data-bs-target="#reporteventas" type="button" role="tab" aria-controls="vreporteventas" aria-selected="false">Registro de Ventas</button>
+          <button
+            class="nav-link"
+            id="reporteventas-tab"
+            data-bs-toggle="tab"
+            data-bs-target="#reporteventas"
+            type="button"
+            role="tab"
+            aria-controls="vreporteventas"
+            aria-selected="false"
+          >
+            Registro de Ventas
+          </button>
         </li>
-    </ul>
+      </ul>
 
-    <div class="tab-content" id="myTabContent">
-        <div class="tab-pane fade show active" id="productos" role="tabpanel" aria-labelledby="productos-tab">
-            <h3 class="mt-4 mb-3">Gestión de Productos</h3>
+      <div class="tab-content" id="myTabContent">
+        <div
+          class="tab-pane fade show active"
+          id="productos"
+          role="tabpanel"
+          aria-labelledby="productos-tab"
+        >
+          <h3 class="mt-4 mb-3">Gestión de Productos</h3>
 
-            <form id="productoForm" class="mb-4">
-                <input type="hidden" id="productoId">
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="nombreProducto" placeholder="Nombre" required>
-                            <label for="nombreProducto">Nombre</label>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-floating">
-                            <input type="number" step="0.01" class="form-control" id="precioProducto" placeholder="Precio" required min="0">
-                            <label for="precioProducto">Precio</label>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="form-floating">
-                            <input type="number" class="form-control" id="stockProducto" placeholder="Stock" required min="0">
-                            <label for="stockProducto">Stock</label>
-                        </div>
-                    </div>
-                    <div class="col-md-2 d-flex align-items-center">
-                        <button type="submit" class="btn btn-primary w-100" id="btnGuardarProducto">Guardar</button>
-                    </div>
+          <form id="productoForm" class="mb-4">
+            <input type="hidden" id="productoId" />
+            <div class="row g-3">
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nombreProducto"
+                    placeholder="Nombre"
+                    required
+                  />
+                  <label for="nombreProducto">Nombre</label>
                 </div>
-            </form>
-
-            <div class="mb-3 search-controls">
-                <input type="text" class="form-control form-control-sm me-2" id="buscarProductoNombre" placeholder="Buscar por nombre">
-                <button class="btn btn-outline-secondary btn-sm" id="btnBuscarProducto">Buscar</button>
-                <button class="btn btn-outline-warning btn-sm" id="btnLimpiarBusquedaProducto">Limpiar</button>
+              </div>
+              <div class="col-md-3">
+                <div class="form-floating">
+                  <input
+                    type="number"
+                    step="0.01"
+                    class="form-control"
+                    id="precioProducto"
+                    placeholder="Precio"
+                    required
+                    min="0"
+                  />
+                  <label for="precioProducto">Precio</label>
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="form-floating">
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="stockProducto"
+                    placeholder="Stock"
+                    required
+                    min="0"
+                  />
+                  <label for="stockProducto">Stock</label>
+                </div>
+              </div>
+              <div class="col-md-2 d-flex align-items-center">
+                <button
+                  type="submit"
+                  class="btn btn-primary w-100"
+                  id="btnGuardarProducto"
+                >
+                  Guardar
+                </button>
+              </div>
             </div>
+          </form>
 
-            <div class="table-responsive">
-                <table class="table table-hover table-bordered table-striped">
-                    <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Precio</th>
-                        <th>Stock</th>
-                        <th>Estado</th>
-                        <th class="text-center">Acciones</th>
-                    </tr>
-                    </thead>
-                    <tbody id="productosTablaBody">
-                    </tbody>
-                </table>
-            </div>
+          <div class="mb-3 search-controls">
+            <input
+              type="text"
+              class="form-control form-control-sm me-2"
+              id="buscarProductoNombre"
+              placeholder="Buscar por nombre"
+            />
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              id="btnBuscarProducto"
+            >
+              Buscar
+            </button>
+            <button
+              class="btn btn-outline-warning btn-sm"
+              id="btnLimpiarBusquedaProducto"
+            >
+              Limpiar
+            </button>
+          </div>
 
-            <div class="pagination-controls" id="paginacionProductos">
-                <button class="btn btn-secondary btn-sm" id="prevPageProducto">Anterior</button>
-                <span class="mx-2">Página <span id="currentPageProducto">1</span> de <span id="totalPagesProducto">1</span></span>
-                <button class="btn btn-secondary btn-sm" id="nextPageProducto">Siguiente</button>
-            </div>
+          <div class="table-responsive">
+            <table class="table table-hover table-bordered table-striped">
+              <thead class="table-dark">
+                <tr>
+                  <th>ID</th>
+                  <th>Nombre</th>
+                  <th>Precio</th>
+                  <th>Stock</th>
+                  <th>Estado</th>
+                  <th class="text-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="productosTablaBody"></tbody>
+            </table>
+          </div>
+
+          <div class="pagination-controls" id="paginacionProductos">
+            <button class="btn btn-secondary btn-sm" id="prevPageProducto">
+              Anterior
+            </button>
+            <span class="mx-2"
+              >Página <span id="currentPageProducto">1</span> de
+              <span id="totalPagesProducto">1</span></span
+            >
+            <button class="btn btn-secondary btn-sm" id="nextPageProducto">
+              Siguiente
+            </button>
+          </div>
         </div>
 
-        <div class="tab-pane fade" id="clientes" role="tabpanel" aria-labelledby="clientes-tab">
-            <h3 class="mt-4 mb-3">Gestión de Clientes</h3>
+        <div
+          class="tab-pane fade"
+          id="clientes"
+          role="tabpanel"
+          aria-labelledby="clientes-tab"
+        >
+          <h3 class="mt-4 mb-3">Gestión de Clientes</h3>
 
-            <form id="clienteForm" class="mb-4">
-                <input type="hidden" id="clienteId">
-                <div class="row g-3">
-                    <div class="col-md-4">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="nombreCliente" placeholder="Nombre" required>
-                            <label for="nombreCliente">Nombre</label>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-floating">
-                            <input type="text" class="form-control" id="apellidoCliente" placeholder="Apellido" required>
-                            <label for="apellidoCliente">Apellido</label>
-                        </div>
-                    </div>
-                    <div class="col-md-4">
-                        <div class="form-floating">
-                            <input type="email" class="form-control" id="emailCliente" placeholder="Email" required>
-                            <label for="emailCliente">Email</label>
-                        </div>
-                    </div>
-                    <div class="col-md-6">
-                        <div class="mb-3">
-                            <label for="fotoClienteFile" class="form-label">Foto de Perfil</label>
-                            <input type="file" class="form-control" id="fotoClienteFile" accept="image/*">
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <div class="mb-3">
-                            <label class="form-label">Estado</label>
-                            <select class="form-select" id="estadoCliente" required>
-                                <option value="1">Activo</option>
-                                <option value="0">Inactivo</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3 d-flex align-items-center">
-                        <button type="submit" class="btn btn-primary w-100" id="btnGuardarCliente">Guardar</button>
-                    </div>
+          <form id="clienteForm" class="mb-4">
+            <input type="hidden" id="clienteId" />
+            <div class="row g-3">
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="nombreCliente"
+                    placeholder="Nombre"
+                    required
+                  />
+                  <label for="nombreCliente">Nombre</label>
                 </div>
-            </form>
-
-            <div class="mb-3 search-controls">
-                <input type="text" class="form-control form-control-sm me-2" id="buscarClienteTexto" placeholder="Buscar por nombre o email">
-                <button class="btn btn-outline-secondary btn-sm" id="btnBuscarCliente">Buscar</button>
-                <button class="btn btn-outline-warning btn-sm" id="btnLimpiarBusquedaCliente">Limpiar</button>
+              </div>
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="apellidoCliente"
+                    placeholder="Apellido"
+                    required
+                  />
+                  <label for="apellidoCliente">Apellido</label>
+                </div>
+              </div>
+              <div class="col-md-4">
+                <div class="form-floating">
+                  <input
+                    type="email"
+                    class="form-control"
+                    id="emailCliente"
+                    placeholder="Email"
+                    required
+                  />
+                  <label for="emailCliente">Email</label>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label for="fotoClienteFile" class="form-label"
+                    >Foto de Perfil</label
+                  >
+                  <input
+                    type="file"
+                    class="form-control"
+                    id="fotoClienteFile"
+                    accept="image/*"
+                  />
+                </div>
+              </div>
+              <div class="col-md-3">
+                <div class="mb-3">
+                  <label class="form-label">Estado</label>
+                  <select class="form-select" id="estadoCliente" required>
+                    <option value="1">Activo</option>
+                    <option value="0">Inactivo</option>
+                  </select>
+                </div>
+              </div>
+              <div class="col-md-3 d-flex align-items-center">
+                <button
+                  type="submit"
+                  class="btn btn-primary w-100"
+                  id="btnGuardarCliente"
+                >
+                  Guardar
+                </button>
+              </div>
             </div>
+          </form>
 
-            <div class="table-responsive">
-                <table class="table table-hover table-bordered table-striped">
-                    <thead class="table-dark">
-                    <tr>
-                        <th>ID</th>
-                        <th>Foto</th>
-                        <th>Nombre</th>
-                        <th>Apellido</th>
-                        <th>Email</th>
-                        <th>Estado</th>
-                        <th class="text-center">Acciones</th>
-                    </tr>
-                    </thead>
-                    <tbody id="clientesTablaBody">
-                    </tbody>
-                </table>
-            </div>
+          <div class="mb-3 search-controls">
+            <input
+              type="text"
+              class="form-control form-control-sm me-2"
+              id="buscarClienteTexto"
+              placeholder="Buscar por nombre o email"
+            />
+            <button
+              class="btn btn-outline-secondary btn-sm"
+              id="btnBuscarCliente"
+            >
+              Buscar
+            </button>
+            <button
+              class="btn btn-outline-warning btn-sm"
+              id="btnLimpiarBusquedaCliente"
+            >
+              Limpiar
+            </button>
+          </div>
 
-            <div class="pagination-controls" id="paginacionClientes">
-                <button class="btn btn-secondary btn-sm" id="prevPageCliente">Anterior</button>
-                <span class="mx-2">Página <span id="currentPageCliente">1</span> de <span id="totalPagesCliente">1</span></span>
-                <button class="btn btn-secondary btn-sm" id="nextPageCliente">Siguiente</button>
-            </div>
+          <div class="table-responsive">
+            <table class="table table-hover table-bordered table-striped">
+              <thead class="table-dark">
+                <tr>
+                  <th>ID</th>
+                  <th>Foto</th>
+                  <th>Nombre</th>
+                  <th>Apellido</th>
+                  <th>Email</th>
+                  <th>Estado</th>
+                  <th class="text-center">Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="clientesTablaBody"></tbody>
+            </table>
+          </div>
+
+          <div class="pagination-controls" id="paginacionClientes">
+            <button class="btn btn-secondary btn-sm" id="prevPageCliente">
+              Anterior
+            </button>
+            <span class="mx-2"
+              >Página <span id="currentPageCliente">1</span> de
+              <span id="totalPagesCliente">1</span></span
+            >
+            <button class="btn btn-secondary btn-sm" id="nextPageCliente">
+              Siguiente
+            </button>
+          </div>
         </div>
 
         <!-- Pestaña de Registro de Ventas -->
-        <div class="tab-pane fade" id="reporteventas" role="tabpanel" aria-labelledby="reporteventas-tab">
-            <div class="container mt-4">
-                <h4>Historial de Ventas</h4>
-                <div class="row mb-3">
-                    <div class="col-md-3">
-                        <input type="text" id="filtroCliente" class="form-control" placeholder="Filtrar por cliente">
-                    </div>
-                    <div class="col-md-3">
-                        <input type="text" id="filtroProducto" class="form-control" placeholder="Filtrar por producto">
-                    </div>
-                    <div class="col-md-3">
-                        <input type="date" id="filtroFecha" class="form-control" placeholder="Filtrar por fecha">
-                    </div>
-                    <div class="col-md-3">
-                        <button id="btnFiltrarVentas" class="btn btn-primary w-100">Filtrar</button>
-                    </div>
-                </div>
-                <table class="table table-bordered table-hover">
-                    <thead>
-                        <tr>
-                            <th>ID Venta</th>
-                            <th>Cliente</th>
-                            <th>Fecha</th>
-                            <th>Productos</th>
-                            <th>Total</th>
-                        </tr>
-                    </thead>
-                    <tbody id="ventasTablaBody">
-                        <!-- Las ventas se llenarán aquí con jQuery -->
-                    </tbody>
-                </table>
+        <div
+          class="tab-pane fade"
+          id="reporteventas"
+          role="tabpanel"
+          aria-labelledby="reporteventas-tab"
+        >
+          <div class="container mt-4">
+            <h4>Historial de Ventas</h4>
+            <div class="row mb-3">
+              <div class="col-md-3">
+                <input
+                  type="text"
+                  id="filtroCliente"
+                  class="form-control"
+                  placeholder="Filtrar por cliente"
+                />
+              </div>
+              <div class="col-md-3">
+                <input
+                  type="text"
+                  id="filtroProducto"
+                  class="form-control"
+                  placeholder="Filtrar por producto"
+                />
+              </div>
+              <div class="col-md-3">
+                <input
+                  type="date"
+                  id="filtroFecha"
+                  class="form-control"
+                  placeholder="Filtrar por fecha"
+                />
+              </div>
+              <div class="col-md-3">
+                <button id="btnFiltrarVentas" class="btn btn-primary w-100">
+                  Filtrar
+                </button>
+              </div>
             </div>
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <th>ID Venta</th>
+                  <th>Cliente</th>
+                  <th>Fecha</th>
+                  <th>Productos</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody id="ventasTablaBody">
+                <!-- Las ventas se llenarán aquí con jQuery -->
+              </tbody>
+            </table>
+          </div>
         </div>
-        <div class="tab-pane fade" id="ventas" role="tabpanel" aria-labelledby="ventas-tab">
-            <div class="container mt-4">
-                <h4>Realizar Venta</h4>
-                <div class="row mb-3">
-                    <div class="col-md-4">
-                        <label for="selectClienteVenta" class="form-label">Seleccionar Cliente:</label>
-                        <select class="form-select" id="selectClienteVenta" style="width: 100%;"></select>
-                        <input type="hidden" id="clienteId">
-                    </div>
-                    <div class="col-md-4">
-                        <label for="selectProductoVenta" class="form-label">Seleccionar Producto:</label>
-                        <select class="form-control" id="selectProductoVenta" style="width: 100%;"></select>
-                    </div>
-                    <div class="col-md-2">
-                        <label for="cantidadVenta" class="form-label">Cantidad:</label>
-                        <input type="number" class="form-control" id="cantidadVenta" min="1" value="1">
-                    </div>
-                    <div class="col-md-2">
-                        <label for="precioUnitarioVenta" class="form-label">Precio Unitario:</label>
-                        <input type="text" class="form-control" id="precioUnitarioVenta" readonly>
-                    </div>
-                </div>
-                <div class="row mb-3">
-                    <div class="col-md-12 text-end">
-                        <button class="btn btn-info" id="agregarProductoVenta">Agregar al Carrito</button>
-                    </div>
-                </div>
-                <h5>Carrito de Venta</h5>
-                <div class="table-responsive mb-4">
-                    <table class="table table-hover table-bordered table-striped">
-                        <thead class="table-dark">
-                        <tr>
-                            <th>Producto</th>
-                            <th>Cantidad</th>
-                            <th>Precio Unitario</th>
-                            <th>Subtotal</th>
-                            <th class="text-center">Acciones</th>
-                        </tr>
-                        </thead>
-                        <tbody id="carritoTablaBody">
-                        </tbody>
-                        <tfoot>
-                        <tr>
-                            <th colspan="3" class="text-end">Total Venta:</th>
-                            <th id="totalVentaDisplay">0.00</th>
-                            <th></th>
-                        </tr>
-                        </tfoot>
-                    </table>
-                </div>
-                <button class="btn btn-success w-100" id="finalizarVenta">Finalizar Venta</button>
+        <div
+          class="tab-pane fade"
+          id="ventas"
+          role="tabpanel"
+          aria-labelledby="ventas-tab"
+        >
+          <div class="container mt-4">
+            <h4>Realizar Venta</h4>
+            <div class="row mb-3">
+              <div class="col-md-4">
+                <label for="selectClienteVenta" class="form-label"
+                  >Seleccionar Cliente:</label
+                >
+                <select
+                  class="form-select"
+                  id="selectClienteVenta"
+                  style="width: 100%"
+                ></select>
+                <input type="hidden" id="clienteId" />
+              </div>
+              <div class="col-md-4">
+                <label for="selectProductoVenta" class="form-label"
+                  >Seleccionar Producto:</label
+                >
+                <select
+                  class="form-control"
+                  id="selectProductoVenta"
+                  style="width: 100%"
+                ></select>
+              </div>
+              <div class="col-md-2">
+                <label for="cantidadVenta" class="form-label">Cantidad:</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="cantidadVenta"
+                  min="1"
+                  value="1"
+                />
+              </div>
+              <div class="col-md-2">
+                <label for="precioUnitarioVenta" class="form-label"
+                  >Precio Unitario:</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="precioUnitarioVenta"
+                  readonly
+                />
+              </div>
             </div>
+            <div class="row mb-3">
+              <div class="col-md-12 text-end">
+                <button class="btn btn-info" id="agregarProductoVenta">
+                  Agregar al Carrito
+                </button>
+              </div>
+            </div>
+            <h5>Carrito de Venta</h5>
+            //Carrito gei de AlejandroCastillo
+            <div class="table-responsive mb-4">
+              <table class="table table-hover table-bordered table-striped">
+                <thead class="table-dark">
+                  <tr>
+                    <th>Producto</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                    <th class="text-center">Acciones</th>
+                  </tr>
+                </thead>
+                <tbody id="carritoTablaBody"></tbody>
+                <tfoot>
+                  <tr>
+                    <th colspan="3" class="text-end">Total Venta:</th>
+                    <th id="totalVentaDisplay">0.00</th>
+                    <th></th>
+                  </tr>
+                </tfoot>
+              </table>
+            </div>
+            <button class="btn btn-success w-100" id="finalizarVenta">
+              Finalizar Venta
+            </button>
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
-<div class="modal fade" id="movimientoProductoModal" tabindex="-1" aria-labelledby="movimientoProductoModalLabel" aria-hidden="true">
-    <div class="modal-dialog modal-lg">
+    <div
+      class="modal fade"
+      id="movimientoProductoModal"
+      tabindex="-1"
+      aria-labelledby="movimientoProductoModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="movimientoProductoModalLabel">Histórico de Movimiento del Producto: <span id="modalProductoNombre"></span></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="modal-header">
+            <h5 class="modal-title" id="movimientoProductoModalLabel">
+              Histórico de Movimiento del Producto:
+              <span id="modalProductoNombre"></span>
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <p>
+              Total de ventas de este producto:
+              <strong id="totalMovimientoDisplay">0.00</strong>
+            </p>
+            <div class="table-responsive">
+              <table class="table table-hover table-bordered table-striped">
+                <thead class="table-dark">
+                  <tr>
+                    <th>ID Venta</th>
+                    <th>Fecha Venta</th>
+                    <th>Cantidad</th>
+                    <th>Precio Unitario</th>
+                    <th>Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody id="historicoMovimientoTablaBody"></tbody>
+              </table>
             </div>
-            <div class="modal-body">
-                <p>Total de ventas de este producto: <strong id="totalMovimientoDisplay">0.00</strong></p>
-                <div class="table-responsive">
-                    <table class="table table-hover table-bordered table-striped">
-                        <thead class="table-dark">
-                        <tr>
-                            <th>ID Venta</th>
-                            <th>Fecha Venta</th>
-                            <th>Cantidad</th>
-                            <th>Precio Unitario</th>
-                            <th>Subtotal</th>
-                        </tr>
-                        </thead>
-                        <tbody id="historicoMovimientoTablaBody">
-                        </tbody>
-                    </table>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cerrar
+            </button>
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
-<div class="modal fade" id="uploadFotoClienteModal" tabindex="-1" aria-labelledby="uploadFotoClienteModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+    <div
+      class="modal fade"
+      id="uploadFotoClienteModal"
+      tabindex="-1"
+      aria-labelledby="uploadFotoClienteModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="uploadFotoClienteModalLabel">Gestionar Foto de Cliente: <span id="modalClienteNombreFoto"></span></h5>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          <div class="modal-header">
+            <h5 class="modal-title" id="uploadFotoClienteModalLabel">
+              Gestionar Foto de Cliente:
+              <span id="modalClienteNombreFoto"></span>
+            </h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body">
+            <input type="hidden" id="uploadFotoClienteId" />
+            <div class="mb-3 text-center">
+              <h6>Foto Actual:</h6>
+              <img
+                id="currentClientePhoto"
+                src=""
+                alt="Foto del Cliente"
+                class="img-fluid rounded-circle cliente-photo"
+                style="
+                  width: 150px;
+                  height: 150px;
+                  border: 1px solid #ddd;
+                  display: none;
+                "
+              />
+              <p id="noPhotoText" class="mt-2 text-muted">
+                No hay foto cargada.
+              </p>
             </div>
-            <div class="modal-body">
-                <input type="hidden" id="uploadFotoClienteId">
-                <div class="mb-3 text-center">
-                    <h6>Foto Actual:</h6>
-                    <img id="currentClientePhoto" src="" alt="Foto del Cliente" class="img-fluid rounded-circle cliente-photo" style="width: 150px; height: 150px; border: 1px solid #ddd; display: none;">
-                    <p id="noPhotoText" class="mt-2 text-muted">No hay foto cargada.</p>
-                </div>
-                <div class="mb-3">
-                    <label for="fileInputClientePhoto" class="form-label">Subir nueva foto:</label>
-                    <input class="form-control" type="file" id="fileInputClientePhoto" accept="image/*">
-                </div>
-                <button type="button" class="btn btn-primary" id="btnUploadClientePhoto">Subir Foto</button>
+            <div class="mb-3">
+              <label for="fileInputClientePhoto" class="form-label"
+                >Subir nueva foto:</label
+              >
+              <input
+                class="form-control"
+                type="file"
+                id="fileInputClientePhoto"
+                accept="image/*"
+              />
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
-            </div>
+            <button
+              type="button"
+              class="btn btn-primary"
+              id="btnUploadClientePhoto"
+            >
+              Subir Foto
+            </button>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Cerrar
+            </button>
+          </div>
         </div>
+      </div>
     </div>
-</div>
 
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+      crossorigin="anonymous"
+    ></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-        crossorigin="anonymous"></script>
-<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+      // --- Configuración de la API ---
+      const API_URL = "http://localhost:8080/api";
 
-<script>
-    // --- Configuración de la API ---
-    const API_URL = 'http://localhost:8080/api';
+      // --- Variables de Paginación para Productos ---
+      let currentPageProducto = 0;
+      let totalPagesProducto = 1;
+      let currentSearchTermProducto = "";
 
-    // --- Variables de Paginación para Productos ---
-    let currentPageProducto = 0;
-    let totalPagesProducto = 1;
-    let currentSearchTermProducto = '';
+      // --- Variables de Paginación para Clientes ---
+      let currentPageCliente = 0;
+      let totalPagesCliente = 1;
+      let currentSearchTermCliente = "";
 
-    // --- Variables de Paginación para Clientes ---
-    let currentPageCliente = 0;
-    let totalPagesCliente = 1;
-    let currentSearchTermCliente = '';
+      // --- Carrito de Venta ---
+      let carrito = []; // Almacena { productoId, nombre, cantidad, precioUnitario }
 
-    // --- Carrito de Venta ---
-    let carrito = []; // Almacena { productoId, nombre, cantidad, precioUnitario }
-
-    // --- Funciones de Utilidad ---
-    function mostrarMensaje(mensaje, tipo = 'success') {
+      // --- Funciones de Utilidad ---
+      function mostrarMensaje(mensaje, tipo = "success") {
         Swal.fire({
-            icon: tipo,
-            title: mensaje,
-            showConfirmButton: false,
-            timer: 1500
+          icon: tipo,
+          title: mensaje,
+          showConfirmButton: false,
+          timer: 1500,
         });
-    }
+      }
 
-    function resetProductoForm() {
-        $('#productoId').val('');
-        $('#nombreProducto').val('');
-        $('#precioProducto').val('');
-        $('#stockProducto').val('');
-        $('#btnGuardarProducto').text('Guardar').removeClass('btn-warning').addClass('btn-primary');
-    }
+      function resetProductoForm() {
+        $("#productoId").val("");
+        $("#nombreProducto").val("");
+        $("#precioProducto").val("");
+        $("#stockProducto").val("");
+        $("#btnGuardarProducto")
+          .text("Guardar")
+          .removeClass("btn-warning")
+          .addClass("btn-primary");
+      }
 
-    function resetClienteForm() {
-        $('#clienteId').val('');
-        $('#nombreCliente').val('');
-        $('#apellidoCliente').val('');
-        $('#emailCliente').val('');
-        $('#fotoClienteFile').val('');
-        $('#estadoCliente').val('1');
-        $('#btnGuardarCliente').text('Guardar').removeClass('btn-warning').addClass('btn-primary');
-    }
+      function resetClienteForm() {
+        $("#clienteId").val("");
+        $("#nombreCliente").val("");
+        $("#apellidoCliente").val("");
+        $("#emailCliente").val("");
+        $("#fotoClienteFile").val("");
+        $("#estadoCliente").val("1");
+        $("#btnGuardarCliente")
+          .text("Guardar")
+          .removeClass("btn-warning")
+          .addClass("btn-primary");
+      }
 
-    // --- Carga y Renderizado de Productos ---
-    async function cargarProductos(page = 0, size = 10, nombre = '') {
+      // --- Carga y Renderizado de Productos ---
+      async function cargarProductos(page = 0, size = 10, nombre = "") {
         try {
-            const url = nombre
-                ? `${API_URL}/productos?page=${page}&size=${size}&nombre=${encodeURIComponent(nombre)}`
-                : `${API_URL}/productos?page=${page}&size=${size}`;
+          const url = nombre
+            ? `${API_URL}/productos?page=${page}&size=${size}&nombre=${encodeURIComponent(
+                nombre
+              )}`
+            : `${API_URL}/productos?page=${page}&size=${size}`;
 
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
 
-            const productosTablaBody = $('#productosTablaBody');
-            productosTablaBody.empty();
+          const productosTablaBody = $("#productosTablaBody");
+          productosTablaBody.empty();
 
-            if (!data.content || data.content.length === 0) {
-                productosTablaBody.append('<tr><td colspan="6" class="text-center">No se encontraron productos.</td></tr>');
-            } else {
-                data.content.forEach(producto => {
-                    const row = `
+          if (!data.content || data.content.length === 0) {
+            productosTablaBody.append(
+              '<tr><td colspan="6" class="text-center">No se encontraron productos.</td></tr>'
+            );
+          } else {
+            data.content.forEach((producto) => {
+              const row = `
                         <tr>
                             <td>${producto.id}</td>
                             <td>${producto.nombre}</td>
                             <td>${producto.precio.toFixed(2)}</td>
                             <td>${producto.stock}</td>
-                            <td>${producto.estado === 1 ? '<span class="badge bg-success">Activo</span>' : producto.estado === 0 ? '<span class="badge bg-warning text-dark">Inactivo</span>' : '<span class="badge bg-danger">Eliminado</span>'}</td>
+                            <td>${
+                              producto.estado === 1
+                                ? '<span class="badge bg-success">Activo</span>'
+                                : producto.estado === 0
+                                ? '<span class="badge bg-warning text-dark">Inactivo</span>'
+                                : '<span class="badge bg-danger">Eliminado</span>'
+                            }</td>
                             <td class="text-center">
-                                <button class="btn btn-sm btn-info editar-producto me-1" data-id="${producto.id}">Editar</button>
-                                <button class="btn btn-sm ${producto.estado === 1 ? 'btn-warning' : 'btn-secondary'} toggle-status-producto me-1" data-id="${producto.id}" ${producto.estado === 2 ? 'disabled' : ''}>
-                                    ${producto.estado === 1 ? 'Inactivar' : 'Activar'}
+                                <button class="btn btn-sm btn-info editar-producto me-1" data-id="${
+                                  producto.id
+                                }">Editar</button>
+                                <button class="btn btn-sm ${
+                                  producto.estado === 1
+                                    ? "btn-warning"
+                                    : "btn-secondary"
+                                } toggle-status-producto me-1" data-id="${
+                producto.id
+              }" ${producto.estado === 2 ? "disabled" : ""}>
+                                    ${
+                                      producto.estado === 1
+                                        ? "Inactivar"
+                                        : "Activar"
+                                    }
                                 </button>
-                                <button class="btn btn-sm btn-danger eliminar-producto" data-id="${producto.id}" ${producto.estado === 2 ? 'disabled' : ''}>Eliminar</button>
-                                <button class="btn btn-sm btn-primary historico-producto ms-1" data-id="${producto.id}" data-nombre="${producto.nombre}">Histórico</button>
+                                <button class="btn btn-sm btn-danger eliminar-producto" data-id="${
+                                  producto.id
+                                }" ${
+                producto.estado === 2 ? "disabled" : ""
+              }>Eliminar</button>
+                                <button class="btn btn-sm btn-primary historico-producto ms-1" data-id="${
+                                  producto.id
+                                }" data-nombre="${
+                producto.nombre
+              }">Histórico</button>
                             </td>
                         </tr>
                     `;
-                    productosTablaBody.append(row);
-                });
-            }
+              productosTablaBody.append(row);
+            });
+          }
 
-            // Actualizar controles de paginación
-            currentPageProducto = data.number;
-            totalPagesProducto = data.totalPages;
-            $('#currentPageProducto').text(currentPageProducto + 1);
-            $('#totalPagesProducto').text(totalPagesProducto);
-            $('#prevPageProducto').prop('disabled', data.first);
-            $('#nextPageProducto').prop('disabled', data.last);
-
+          // Actualizar controles de paginación
+          currentPageProducto = data.number;
+          totalPagesProducto = data.totalPages;
+          $("#currentPageProducto").text(currentPageProducto + 1);
+          $("#totalPagesProducto").text(totalPagesProducto);
+          $("#prevPageProducto").prop("disabled", data.first);
+          $("#nextPageProducto").prop("disabled", data.last);
         } catch (error) {
-            console.error('Error al cargar productos:', error);
-            $('#productosTablaBody').html(`<tr><td colspan="6" class="text-center text-danger">Error al cargar productos: ${error.message}</td></tr>`);
-            mostrarMensaje('Error al cargar productos: ' + error.message, 'error');
+          console.error("Error al cargar productos:", error);
+          $("#productosTablaBody").html(
+            `<tr><td colspan="6" class="text-center text-danger">Error al cargar productos: ${error.message}</td></tr>`
+          );
+          mostrarMensaje(
+            "Error al cargar productos: " + error.message,
+            "error"
+          );
         }
-    }
+      }
 
-    // --- Carga y Renderizado de Clientes ---
-    async function cargarClientes(page = 0, size = 10, searchTerm = '') {
+      // --- Carga y Renderizado de Clientes ---
+      async function cargarClientes(page = 0, size = 10, searchTerm = "") {
         try {
-            let url = `${API_URL}/clientes?page=${page}&size=${size}`;
-            if (searchTerm) {
-                if (searchTerm.includes('@')) {
-                    url += `&email=${encodeURIComponent(searchTerm)}`;
-                } else {
-                    url += `&nombre=${encodeURIComponent(searchTerm)}`;
-                }
-            }
-
-            const response = await fetch(url);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-
-            const clientesTablaBody = $('#clientesTablaBody');
-            clientesTablaBody.empty();
-
-            if (!data.content || data.content.length === 0) {
-                clientesTablaBody.append('<tr><td colspan="7" class="text-center">No se encontraron clientes.</td></tr>');
+          let url = `${API_URL}/clientes?page=${page}&size=${size}`;
+          if (searchTerm) {
+            if (searchTerm.includes("@")) {
+              url += `&email=${encodeURIComponent(searchTerm)}`;
             } else {
-                data.content.forEach(cliente => {
-                    const photoSrc = cliente.rutaFoto ? `${API_URL}/clientes/fotos/${cliente.rutaFoto}` : 'https://via.placeholder.com/50?text=No+Foto';
-                    const estadoText = cliente.estado === 1 ? '<span class="badge bg-success">Activo</span>' :
-                                       cliente.estado === 0 ? '<span class="badge bg-warning text-dark">Inactivo</span>' :
-                                       '<span class="badge bg-danger">Eliminado</span>';
-                    const row = `
+              url += `&nombre=${encodeURIComponent(searchTerm)}`;
+            }
+          }
+
+          const response = await fetch(url);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+
+          const clientesTablaBody = $("#clientesTablaBody");
+          clientesTablaBody.empty();
+
+          if (!data.content || data.content.length === 0) {
+            clientesTablaBody.append(
+              '<tr><td colspan="7" class="text-center">No se encontraron clientes.</td></tr>'
+            );
+          } else {
+            data.content.forEach((cliente) => {
+              const photoSrc = cliente.rutaFoto
+                ? `${API_URL}/clientes/fotos/${cliente.rutaFoto}`
+                : "https://via.placeholder.com/50?text=No+Foto";
+              const estadoText =
+                cliente.estado === 1
+                  ? '<span class="badge bg-success">Activo</span>'
+                  : cliente.estado === 0
+                  ? '<span class="badge bg-warning text-dark">Inactivo</span>'
+                  : '<span class="badge bg-danger">Eliminado</span>';
+              const row = `
                         <tr>
                             <td>${cliente.id}</td>
                             <td><img src="${photoSrc}" alt="Foto" class="cliente-photo"></td>
@@ -527,494 +868,620 @@
                             <td>${cliente.email}</td>
                             <td>${estadoText}</td>
                             <td class="text-center">
-                                <button class="btn btn-sm btn-info editar-cliente me-1" data-id="${cliente.id}">Editar</button>
-                                <button class="btn btn-sm ${cliente.estado === 1 ? 'btn-warning' : 'btn-secondary'} toggle-status-cliente me-1" data-id="${cliente.id}" ${cliente.estado === 2 ? 'disabled' : ''}>
-                                    ${cliente.estado === 1 ? 'Inactivar' : 'Activar'}
+                                <button class="btn btn-sm btn-info editar-cliente me-1" data-id="${
+                                  cliente.id
+                                }">Editar</button>
+                                <button class="btn btn-sm ${
+                                  cliente.estado === 1
+                                    ? "btn-warning"
+                                    : "btn-secondary"
+                                } toggle-status-cliente me-1" data-id="${
+                cliente.id
+              }" ${cliente.estado === 2 ? "disabled" : ""}>
+                                    ${
+                                      cliente.estado === 1
+                                        ? "Inactivar"
+                                        : "Activar"
+                                    }
                                 </button>
-                                <button class="btn btn-sm btn-danger eliminar-cliente me-1" data-id="${cliente.id}" ${cliente.estado === 2 ? 'disabled' : ''}>Eliminar</button>
-                                <button class="btn btn-sm btn-secondary upload-foto-cliente" data-id="${cliente.id}" data-nombre="${cliente.nombre} ${cliente.apellido}" data-fotourl="${cliente.rutaFoto || ''}">Foto</button>
+                                <button class="btn btn-sm btn-danger eliminar-cliente me-1" data-id="${
+                                  cliente.id
+                                }" ${
+                cliente.estado === 2 ? "disabled" : ""
+              }>Eliminar</button>
+                                <button class="btn btn-sm btn-secondary upload-foto-cliente" data-id="${
+                                  cliente.id
+                                }" data-nombre="${cliente.nombre} ${
+                cliente.apellido
+              }" data-fotourl="${cliente.rutaFoto || ""}">Foto</button>
                             </td>
                         </tr>
                     `;
-                    clientesTablaBody.append(row);
-                });
-            }
+              clientesTablaBody.append(row);
+            });
+          }
 
-            // Actualizar controles de paginación
-            currentPageCliente = data.number;
-            totalPagesCliente = data.totalPages;
-            $('#currentPageCliente').text(currentPageCliente + 1);
-            $('#totalPagesCliente').text(totalPagesCliente);
-            $('#prevPageCliente').prop('disabled', data.first);
-            $('#nextPageCliente').prop('disabled', data.last);
-
+          // Actualizar controles de paginación
+          currentPageCliente = data.number;
+          totalPagesCliente = data.totalPages;
+          $("#currentPageCliente").text(currentPageCliente + 1);
+          $("#totalPagesCliente").text(totalPagesCliente);
+          $("#prevPageCliente").prop("disabled", data.first);
+          $("#nextPageCliente").prop("disabled", data.last);
         } catch (error) {
-            console.error('Error al cargar clientes:', error);
-            $('#clientesTablaBody').html(`<tr><td colspan="7" class="text-center text-danger">Error al cargar clientes: ${error.message}</td></tr>`);
-            mostrarMensaje('Error al cargar clientes: ' + error.message, 'error');
+          console.error("Error al cargar clientes:", error);
+          $("#clientesTablaBody").html(
+            `<tr><td colspan="7" class="text-center text-danger">Error al cargar clientes: ${error.message}</td></tr>`
+          );
+          mostrarMensaje("Error al cargar clientes: " + error.message, "error");
         }
-    }
+      }
 
-    // --- CRUD Productos ---
-    $('#productoForm').on('submit', async function(e) {
+      // --- CRUD Productos ---
+      $("#productoForm").on("submit", async function (e) {
         e.preventDefault();
-        const id = $('#productoId').val();
-        const nombre = $('#nombreProducto').val();
-        const precio = parseFloat($('#precioProducto').val());
-        const stock = parseInt($('#stockProducto').val());
+        const id = $("#productoId").val();
+        const nombre = $("#nombreProducto").val();
+        const precio = parseFloat($("#precioProducto").val());
+        const stock = parseInt($("#stockProducto").val());
 
         const producto = { nombre, precio, stock };
 
         try {
-            let response;
-            if (id) {
-                response = await fetch(`${API_URL}/productos/${id}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(producto)
-                });
-            } else {
-                response = await fetch(`${API_URL}/productos`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(producto)
-                });
-            }
+          let response;
+          if (id) {
+            response = await fetch(`${API_URL}/productos/${id}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(producto),
+            });
+          } else {
+            response = await fetch(`${API_URL}/productos`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(producto),
+            });
+          }
 
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Error al guardar el producto');
-            }
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(
+              errorData.message || "Error al guardar el producto"
+            );
+          }
 
-            mostrarMensaje('Producto guardado exitosamente');
-            resetProductoForm();
-            cargarProductos(currentPageProducto, 10, currentSearchTermProducto);
-            cargarTodosLosProductosActivos();
+          mostrarMensaje("Producto guardado exitosamente");
+          resetProductoForm();
+          cargarProductos(currentPageProducto, 10, currentSearchTermProducto);
+          cargarTodosLosProductosActivos();
         } catch (error) {
-            console.error('Error al guardar producto:', error);
-            mostrarMensaje('Error al guardar producto: ' + error.message, 'error');
+          console.error("Error al guardar producto:", error);
+          mostrarMensaje(
+            "Error al guardar producto: " + error.message,
+            "error"
+          );
         }
-    });
+      });
 
-    $('#productosTablaBody').on('click', '.editar-producto', async function() {
-        const id = $(this).data('id');
-        try {
+      $("#productosTablaBody").on(
+        "click",
+        ".editar-producto",
+        async function () {
+          const id = $(this).data("id");
+          try {
             const response = await fetch(`${API_URL}/productos/${id}`);
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+              throw new Error(`HTTP error! status: ${response.status}`);
             }
             const producto = await response.json();
-            $('#productoId').val(producto.id);
-            $('#nombreProducto').val(producto.nombre);
-            $('#precioProducto').val(producto.precio);
-            $('#stockProducto').val(producto.stock);
-            $('#btnGuardarProducto').text('Actualizar').removeClass('btn-primary').addClass('btn-warning');
-        } catch (error) {
-            console.error('Error al cargar producto para edición:', error);
-            mostrarMensaje('Error al cargar producto para edición: ' + error.message, 'error');
+            $("#productoId").val(producto.id);
+            $("#nombreProducto").val(producto.nombre);
+            $("#precioProducto").val(producto.precio);
+            $("#stockProducto").val(producto.stock);
+            $("#btnGuardarProducto")
+              .text("Actualizar")
+              .removeClass("btn-primary")
+              .addClass("btn-warning");
+          } catch (error) {
+            console.error("Error al cargar producto para edición:", error);
+            mostrarMensaje(
+              "Error al cargar producto para edición: " + error.message,
+              "error"
+            );
+          }
         }
-    });
+      );
 
-    $('#productosTablaBody').on('click', '.eliminar-producto', function() {
-        const id = $(this).data('id');
+      $("#productosTablaBody").on("click", ".eliminar-producto", function () {
+        const id = $(this).data("id");
         Swal.fire({
-            title: '¿Estás seguro?',
-            text: "El producto será eliminado lógicamente (no se borrará de la BD).",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar'
+          title: "¿Estás seguro?",
+          text: "El producto será eliminado lógicamente (no se borrará de la BD).",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Sí, eliminar",
+          cancelButtonText: "Cancelar",
         }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    const response = await fetch(`${API_URL}/productos/${id}`, {
-                        method: 'DELETE'
-                    });
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.message || 'Error al eliminar el producto');
-                    }
-                    mostrarMensaje('Producto eliminado lógicamente');
-                    cargarProductos(currentPageProducto, 10, currentSearchTermProducto);
-                    cargarTodosLosProductosActivos();
-                } catch (error) {
-                    console.error('Error al eliminar producto:', error);
-                    mostrarMensaje('Error al eliminar producto: ' + error.message, 'error');
-                }
-            }
-        });
-    });
-
-    $('#productosTablaBody').on('click', '.toggle-status-producto', async function() {
-        const id = $(this).data('id');
-        try {
-            const response = await fetch(`${API_URL}/productos/${id}/toggle-status`, {
-                method: 'PATCH'
-            });
-            if (!response.ok) {
+          if (result.isConfirmed) {
+            try {
+              const response = await fetch(`${API_URL}/productos/${id}`, {
+                method: "DELETE",
+              });
+              if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || 'Error al cambiar el estado del producto');
+                throw new Error(
+                  errorData.message || "Error al eliminar el producto"
+                );
+              }
+              mostrarMensaje("Producto eliminado lógicamente");
+              cargarProductos(
+                currentPageProducto,
+                10,
+                currentSearchTermProducto
+              );
+              cargarTodosLosProductosActivos();
+            } catch (error) {
+              console.error("Error al eliminar producto:", error);
+              mostrarMensaje(
+                "Error al eliminar producto: " + error.message,
+                "error"
+              );
+            }
+          }
+        });
+      });
+
+      $("#productosTablaBody").on(
+        "click",
+        ".toggle-status-producto",
+        async function () {
+          const id = $(this).data("id");
+          try {
+            const response = await fetch(
+              `${API_URL}/productos/${id}/toggle-status`,
+              {
+                method: "PATCH",
+              }
+            );
+            if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(
+                errorData.message || "Error al cambiar el estado del producto"
+              );
             }
             const updatedProduct = await response.json();
-            mostrarMensaje(`Producto ${updatedProduct.estado === 1 ? 'activado' : 'inactivado'} correctamente`);
+            mostrarMensaje(
+              `Producto ${
+                updatedProduct.estado === 1 ? "activado" : "inactivado"
+              } correctamente`
+            );
             cargarProductos(currentPageProducto, 10, currentSearchTermProducto);
             cargarTodosLosProductosActivos();
-        } catch (error) {
-            console.error('Error al cambiar estado:', error);
-            mostrarMensaje('Error al cambiar estado: ' + error.message, 'error');
+          } catch (error) {
+            console.error("Error al cambiar estado:", error);
+            mostrarMensaje(
+              "Error al cambiar estado: " + error.message,
+              "error"
+            );
+          }
         }
-    });
+      );
 
-    $('#btnBuscarProducto').on('click', () => {
-        currentSearchTermProducto = $('#buscarProductoNombre').val();
+      $("#btnBuscarProducto").on("click", () => {
+        currentSearchTermProducto = $("#buscarProductoNombre").val();
         cargarProductos(0, 10, currentSearchTermProducto);
-    });
+      });
 
-    $('#btnLimpiarBusquedaProducto').on('click', () => {
-        $('#buscarProductoNombre').val('');
-        currentSearchTermProducto = '';
-        cargarProductos(0, 10, '');
-    });
+      $("#btnLimpiarBusquedaProducto").on("click", () => {
+        $("#buscarProductoNombre").val("");
+        currentSearchTermProducto = "";
+        cargarProductos(0, 10, "");
+      });
 
-    $('#prevPageProducto').on('click', () => {
+      $("#prevPageProducto").on("click", () => {
         if (currentPageProducto > 0) {
-            cargarProductos(currentPageProducto - 1, 10, currentSearchTermProducto);
+          cargarProductos(
+            currentPageProducto - 1,
+            10,
+            currentSearchTermProducto
+          );
         }
-    });
+      });
 
-    $('#nextPageProducto').on('click', () => {
+      $("#nextPageProducto").on("click", () => {
         if (currentPageProducto < totalPagesProducto - 1) {
-            cargarProductos(currentPageProducto + 1, 10, currentSearchTermProducto);
+          cargarProductos(
+            currentPageProducto + 1,
+            10,
+            currentSearchTermProducto
+          );
         }
-    });
+      });
 
-    // --- CRUD Clientes ---
-    $('#clienteForm').on('submit', async function(e) {
+      // --- CRUD Clientes ---
+      $("#clienteForm").on("submit", async function (e) {
         e.preventDefault();
-        const id = $('#clienteId').val();
-        const nombre = $('#nombreCliente').val();
-        const apellido = $('#apellidoCliente').val();
-        const email = $('#emailCliente').val();
-        const estado = parseInt($('#estadoCliente').val()); // Obtener el estado del select
+        const id = $("#clienteId").val();
+        const nombre = $("#nombreCliente").val();
+        const apellido = $("#apellidoCliente").val();
+        const email = $("#emailCliente").val();
+        const estado = parseInt($("#estadoCliente").val()); // Obtener el estado del select
 
         const cliente = { nombre, apellido, email, estado }; // Incluir estado en el objeto
 
         try {
-            let response;
-            if (id) {
-                // Actualizar cliente
-                response = await fetch(`${API_URL}/clientes/${id}`, {
-                    method: 'PUT',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(cliente)
-                });
-            } else {
-                // Crear cliente
-                response = await fetch(`${API_URL}/clientes`, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(cliente)
-                });
-            }
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Error al guardar el cliente');
-            }
-
-            // Si se seleccionó una foto, subirla
-            if ($('#fotoClienteFile')[0].files.length > 0) {
-                const clientIdToUpload = id || (await response.json()).id; // Usar ID existente o el recién creado
-                await uploadClientePhoto(clientIdToUpload, $('#fotoClienteFile')[0].files[0]);
-                mostrarMensaje('Cliente guardado y foto subida exitosamente');
-            } else {
-                mostrarMensaje('Cliente guardado exitosamente');
-            }
-
-            resetClienteForm();
-            cargarClientes(currentPageCliente, 10, currentSearchTermCliente);
-        } catch (error) {
-            console.error('Error al guardar cliente:', error);
-            mostrarMensaje('Error al guardar cliente: ' + error.message, 'error');
-        }
-    });
-
-    // Editar Cliente
-    $('#clientesTablaBody').on('click', '.editar-cliente', async function() {
-        const id = $(this).data('id');
-        try {
-            const response = await fetch(`${API_URL}/clientes/${id}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const cliente = await response.json();
-            $('#clienteId').val(cliente.id);
-            $('#nombreCliente').val(cliente.nombre);
-            $('#apellidoCliente').val(cliente.apellido);
-            $('#emailCliente').val(cliente.email);
-            $('#estadoCliente').val(cliente.estado); // Setear el estado
-            $('#btnGuardarCliente').text('Actualizar').removeClass('btn-primary').addClass('btn-warning');
-        } catch (error) {
-            console.error('Error al cargar cliente para edición:', error);
-            mostrarMensaje('Error al cargar cliente para edición: ' + error.message, 'error');
-        }
-    });
-
-    // Eliminar Lógicamente Cliente
-    $('#clientesTablaBody').on('click', '.eliminar-cliente', function() {
-        const id = $(this).data('id');
-        Swal.fire({
-            title: '¿Estás seguro?',
-            text: "El cliente será eliminado lógicamente y su foto será eliminada del servidor.",
-            icon: 'warning',
-            showCancelButton: true,
-            confirmButtonColor: '#d33',
-            cancelButtonColor: '#3085d6',
-            confirmButtonText: 'Sí, eliminar',
-            cancelButtonText: 'Cancelar'
-        }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    const response = await fetch(`${API_URL}/clientes/${id}`, {
-                        method: 'DELETE'
-                    });
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.message || 'Error al eliminar el cliente');
-                    }
-                    mostrarMensaje('Cliente eliminado lógicamente');
-                    cargarClientes(currentPageCliente, 10, currentSearchTermCliente);
-                } catch (error) {
-                    console.error('Error al eliminar cliente:', error);
-                    mostrarMensaje('Error al eliminar cliente: ' + error.message, 'error');
-                }
-            }
-        });
-    });
-
-    // Cambiar estado (Activo/Inactivo) Cliente
-    $('#clientesTablaBody').on('click', '.toggle-status-cliente', async function() {
-        const id = $(this).data('id');
-        try {
-            const response = await fetch(`${API_URL}/clientes/${id}/toggle-status`, {
-                method: 'PATCH'
+          let response;
+          if (id) {
+            // Actualizar cliente
+            response = await fetch(`${API_URL}/clientes/${id}`, {
+              method: "PUT",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(cliente),
             });
-            if (!response.ok) {
+          } else {
+            // Crear cliente
+            response = await fetch(`${API_URL}/clientes`, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(cliente),
+            });
+          }
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Error al guardar el cliente");
+          }
+
+          // Si se seleccionó una foto, subirla
+          if ($("#fotoClienteFile")[0].files.length > 0) {
+            const clientIdToUpload = id || (await response.json()).id; // Usar ID existente o el recién creado
+            await uploadClientePhoto(
+              clientIdToUpload,
+              $("#fotoClienteFile")[0].files[0]
+            );
+            mostrarMensaje("Cliente guardado y foto subida exitosamente");
+          } else {
+            mostrarMensaje("Cliente guardado exitosamente");
+          }
+
+          resetClienteForm();
+          cargarClientes(currentPageCliente, 10, currentSearchTermCliente);
+        } catch (error) {
+          console.error("Error al guardar cliente:", error);
+          mostrarMensaje("Error al guardar cliente: " + error.message, "error");
+        }
+      });
+
+      // Editar Cliente
+      $("#clientesTablaBody").on("click", ".editar-cliente", async function () {
+        const id = $(this).data("id");
+        try {
+          const response = await fetch(`${API_URL}/clientes/${id}`);
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const cliente = await response.json();
+          $("#clienteId").val(cliente.id);
+          $("#nombreCliente").val(cliente.nombre);
+          $("#apellidoCliente").val(cliente.apellido);
+          $("#emailCliente").val(cliente.email);
+          $("#estadoCliente").val(cliente.estado); // Setear el estado
+          $("#btnGuardarCliente")
+            .text("Actualizar")
+            .removeClass("btn-primary")
+            .addClass("btn-warning");
+        } catch (error) {
+          console.error("Error al cargar cliente para edición:", error);
+          mostrarMensaje(
+            "Error al cargar cliente para edición: " + error.message,
+            "error"
+          );
+        }
+      });
+
+      // Eliminar Lógicamente Cliente
+      $("#clientesTablaBody").on("click", ".eliminar-cliente", function () {
+        const id = $(this).data("id");
+        Swal.fire({
+          title: "¿Estás seguro?",
+          text: "El cliente será eliminado lógicamente y su foto será eliminada del servidor.",
+          icon: "warning",
+          showCancelButton: true,
+          confirmButtonColor: "#d33",
+          cancelButtonColor: "#3085d6",
+          confirmButtonText: "Sí, eliminar",
+          cancelButtonText: "Cancelar",
+        }).then(async (result) => {
+          if (result.isConfirmed) {
+            try {
+              const response = await fetch(`${API_URL}/clientes/${id}`, {
+                method: "DELETE",
+              });
+              if (!response.ok) {
                 const errorData = await response.json();
-                throw new Error(errorData.message || 'Error al cambiar el estado del cliente');
+                throw new Error(
+                  errorData.message || "Error al eliminar el cliente"
+                );
+              }
+              mostrarMensaje("Cliente eliminado lógicamente");
+              cargarClientes(currentPageCliente, 10, currentSearchTermCliente);
+            } catch (error) {
+              console.error("Error al eliminar cliente:", error);
+              mostrarMensaje(
+                "Error al eliminar cliente: " + error.message,
+                "error"
+              );
+            }
+          }
+        });
+      });
+
+      // Cambiar estado (Activo/Inactivo) Cliente
+      $("#clientesTablaBody").on(
+        "click",
+        ".toggle-status-cliente",
+        async function () {
+          const id = $(this).data("id");
+          try {
+            const response = await fetch(
+              `${API_URL}/clientes/${id}/toggle-status`,
+              {
+                method: "PATCH",
+              }
+            );
+            if (!response.ok) {
+              const errorData = await response.json();
+              throw new Error(
+                errorData.message || "Error al cambiar el estado del cliente"
+              );
             }
             const updatedCliente = await response.json();
-            mostrarMensaje(`Cliente ${updatedCliente.estado === 1 ? 'activado' : 'inactivado'} correctamente`);
+            mostrarMensaje(
+              `Cliente ${
+                updatedCliente.estado === 1 ? "activado" : "inactivado"
+              } correctamente`
+            );
             cargarClientes(currentPageCliente, 10, currentSearchTermCliente);
-        } catch (error) {
-            console.error('Error al cambiar estado:', error);
-            mostrarMensaje('Error al cambiar estado: ' + error.message, 'error');
+          } catch (error) {
+            console.error("Error al cambiar estado:", error);
+            mostrarMensaje(
+              "Error al cambiar estado: " + error.message,
+              "error"
+            );
+          }
         }
-    });
+      );
 
-    // Búsqueda de Clientes
-    $('#btnBuscarCliente').on('click', () => {
-        currentSearchTermCliente = $('#buscarClienteTexto').val();
+      // Búsqueda de Clientes
+      $("#btnBuscarCliente").on("click", () => {
+        currentSearchTermCliente = $("#buscarClienteTexto").val();
         cargarClientes(0, 10, currentSearchTermCliente);
-    });
+      });
 
-    $('#btnLimpiarBusquedaCliente').on('click', () => {
-        $('#buscarClienteTexto').val('');
-        currentSearchTermCliente = '';
-        cargarClientes(0, 10, '');
-    });
+      $("#btnLimpiarBusquedaCliente").on("click", () => {
+        $("#buscarClienteTexto").val("");
+        currentSearchTermCliente = "";
+        cargarClientes(0, 10, "");
+      });
 
-    // Paginación de Clientes
-    $('#prevPageCliente').on('click', () => {
+      // Paginación de Clientes
+      $("#prevPageCliente").on("click", () => {
         if (currentPageCliente > 0) {
-            cargarClientes(currentPageCliente - 1, 10, currentSearchTermCliente);
+          cargarClientes(currentPageCliente - 1, 10, currentSearchTermCliente);
         }
-    });
+      });
 
-    $('#nextPageCliente').on('click', () => {
+      $("#nextPageCliente").on("click", () => {
         if (currentPageCliente < totalPagesCliente - 1) {
-            cargarClientes(currentPageCliente + 1, 10, currentSearchTermCliente);
+          cargarClientes(currentPageCliente + 1, 10, currentSearchTermCliente);
         }
-    });
+      });
 
-    // --- Gestión de Foto de Cliente (Modal) ---
-    $('#clientesTablaBody').on('click', '.upload-foto-cliente', function() {
-        const clientId = $(this).data('id');
-        const clientName = $(this).data('nombre');
-        const photoUrl = $(this).data('fotourl');
+      // --- Gestión de Foto de Cliente (Modal) ---
+      $("#clientesTablaBody").on("click", ".upload-foto-cliente", function () {
+        const clientId = $(this).data("id");
+        const clientName = $(this).data("nombre");
+        const photoUrl = $(this).data("fotourl");
 
-        $('#uploadFotoClienteId').val(clientId);
-        $('#modalClienteNombreFoto').text(clientName);
-        $('#fileInputClientePhoto').val(''); // Limpiar el input de archivo del modal
+        $("#uploadFotoClienteId").val(clientId);
+        $("#modalClienteNombreFoto").text(clientName);
+        $("#fileInputClientePhoto").val(""); // Limpiar el input de archivo del modal
 
-        const currentPhotoImg = $('#currentClientePhoto');
-        const noPhotoText = $('#noPhotoText');
+        const currentPhotoImg = $("#currentClientePhoto");
+        const noPhotoText = $("#noPhotoText");
 
         if (photoUrl) {
-            currentPhotoImg.attr('src', `${API_URL}/clientes/fotos/${photoUrl}`);
-            currentPhotoImg.show();
-            noPhotoText.hide();
+          currentPhotoImg.attr("src", `${API_URL}/clientes/fotos/${photoUrl}`);
+          currentPhotoImg.show();
+          noPhotoText.hide();
         } else {
-            currentPhotoImg.attr('src', '');
-            currentPhotoImg.hide();
-            noPhotoText.show();
+          currentPhotoImg.attr("src", "");
+          currentPhotoImg.hide();
+          noPhotoText.show();
         }
 
-        const uploadFotoModal = new bootstrap.Modal(document.getElementById('uploadFotoClienteModal'));
+        const uploadFotoModal = new bootstrap.Modal(
+          document.getElementById("uploadFotoClienteModal")
+        );
         uploadFotoModal.show();
-    });
+      });
 
-    $('#btnUploadClientePhoto').on('click', async function() {
-        const clientId = $('#uploadFotoClienteId').val();
-        const fileInput = $('#fileInputClientePhoto')[0];
+      $("#btnUploadClientePhoto").on("click", async function () {
+        const clientId = $("#uploadFotoClienteId").val();
+        const fileInput = $("#fileInputClientePhoto")[0];
         const file = fileInput.files[0];
 
         if (!file) {
-            mostrarMensaje('Por favor, seleccione un archivo.', 'warning');
-            return;
+          mostrarMensaje("Por favor, seleccione un archivo.", "warning");
+          return;
         }
 
         await uploadClientePhoto(clientId, file);
         // Cerrar modal y recargar clientes después de subir la foto
-        bootstrap.Modal.getInstance(document.getElementById('uploadFotoClienteModal')).hide();
+        bootstrap.Modal.getInstance(
+          document.getElementById("uploadFotoClienteModal")
+        ).hide();
         cargarClientes(currentPageCliente, 10, currentSearchTermCliente);
-    });
+      });
 
-    async function uploadClientePhoto(clientId, file) {
+      async function uploadClientePhoto(clientId, file) {
         const formData = new FormData();
-        formData.append('file', file);
+        formData.append("file", file);
 
         try {
-            const response = await fetch(`${API_URL}/clientes/${clientId}/uploadFoto`, {
-                method: 'POST',
-                body: formData
-            });
-
-            if (!response.ok) {
-                const errorData = await response.json();
-                throw new Error(errorData.message || 'Error al subir la foto');
+          const response = await fetch(
+            `${API_URL}/clientes/${clientId}/uploadFoto`,
+            {
+              method: "POST",
+              body: formData,
             }
+          );
 
-            mostrarMensaje('Foto subida exitosamente!');
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || "Error al subir la foto");
+          }
+
+          mostrarMensaje("Foto subida exitosamente!");
         } catch (error) {
-            console.error('Error al subir la foto:', error);
-            mostrarMensaje('Error al subir la foto: ' + error.message, 'error');
+          console.error("Error al subir la foto:", error);
+          mostrarMensaje("Error al subir la foto: " + error.message, "error");
         }
-    }
+      }
 
+      // --- Lógica para el Carrito de Ventas ---
 
-    // --- Lógica para el Carrito de Ventas ---
+      // Array para almacenar todos los productos activos para el Select2
+      let allActiveProducts = [];
 
-    // Array para almacenar todos los productos activos para el Select2
-    let allActiveProducts = [];
-
-    async function cargarTodosLosProductosActivos() {
+      async function cargarTodosLosProductosActivos() {
         try {
-            // Ajusta el tamaño si tienes muchos productos. Podrías necesitar paginar esto también.
-            const response = await fetch(`${API_URL}/productos?page=0&size=1000&estado=1`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
-            const data = await response.json();
-            allActiveProducts = data.content.filter(p => p.estado === 1 && p.stock > 0); // Solo productos activos y con stock > 0
+          // Ajusta el tamaño si tienes muchos productos. Podrías necesitar paginar esto también.
+          const response = await fetch(
+            `${API_URL}/productos?page=0&size=1000&estado=1`
+          );
+          if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+          }
+          const data = await response.json();
+          allActiveProducts = data.content.filter(
+            (p) => p.estado === 1 && p.stock > 0
+          ); // Solo productos activos y con stock > 0
         } catch (error) {
-            console.error('Error al cargar todos los productos activos:', error);
-            mostrarMensaje('Error al cargar productos activos para venta: ' + error.message, 'error');
+          console.error("Error al cargar todos los productos activos:", error);
+          mostrarMensaje(
+            "Error al cargar productos activos para venta: " + error.message,
+            "error"
+          );
         }
-    }
+      }
 
-    function inicializarSelect2Productos() {
-        $('#selectProductoVenta').select2({
-            placeholder: 'Seleccione un producto',
-            allowClear: true,
-            data: allActiveProducts.map(p => ({
-                id: p.id,
-                text: `${p.nombre} (Stock: ${p.stock})`,
-                producto: p // Guardar el objeto producto completo
-            }))
+      function inicializarSelect2Productos() {
+        $("#selectProductoVenta").select2({
+          placeholder: "Seleccione un producto",
+          allowClear: true,
+          data: allActiveProducts.map((p) => ({
+            id: p.id,
+            text: `${p.nombre} (Stock: ${p.stock})`,
+            producto: p, // Guardar el objeto producto completo
+          })),
         });
 
-        $('#selectProductoVenta').on('select2:select', function(e) {
-            const selectedProduct = e.params.data.producto;
-            if (selectedProduct) {
-                $('#precioUnitarioVenta').val(selectedProduct.precio.toFixed(2));
-                $('#cantidadVenta').attr('max', selectedProduct.stock); // Limitar cantidad por stock
-                $('#cantidadVenta').val(1); // Resetear cantidad a 1
-            }
+        $("#selectProductoVenta").on("select2:select", function (e) {
+          const selectedProduct = e.params.data.producto;
+          if (selectedProduct) {
+            $("#precioUnitarioVenta").val(selectedProduct.precio.toFixed(2));
+            $("#cantidadVenta").attr("max", selectedProduct.stock); // Limitar cantidad por stock
+            $("#cantidadVenta").val(1); // Resetear cantidad a 1
+          }
         });
 
-        $('#selectProductoVenta').on('select2:unselect', function(e) {
-            $('#precioUnitarioVenta').val('');
-            $('#cantidadVenta').attr('max', '');
-            $('#cantidadVenta').val(1);
+        $("#selectProductoVenta").on("select2:unselect", function (e) {
+          $("#precioUnitarioVenta").val("");
+          $("#cantidadVenta").attr("max", "");
+          $("#cantidadVenta").val(1);
         });
-    }
+      }
 
-
-    $('#agregarProductoVenta').on('click', function() {
-        const productoId = $('#selectProductoVenta').val();
-        const cantidad = parseInt($('#cantidadVenta').val());
+      $("#agregarProductoVenta").on("click", function () {
+        const productoId = $("#selectProductoVenta").val();
+        const cantidad = parseInt($("#cantidadVenta").val());
 
         if (!productoId || isNaN(cantidad) || cantidad <= 0) {
-            mostrarMensaje('Seleccione un producto y una cantidad válida.', 'warning');
-            return;
+          mostrarMensaje(
+            "Seleccione un producto y una cantidad válida.",
+            "warning"
+          );
+          return;
         }
 
-        const productoExistente = allActiveProducts.find(p => p.id == productoId);
+        const productoExistente = allActiveProducts.find(
+          (p) => p.id == productoId
+        );
 
         if (!productoExistente) {
-            mostrarMensaje('Producto no encontrado o inactivo.', 'error');
-            return;
+          mostrarMensaje("Producto no encontrado o inactivo.", "error");
+          return;
         }
 
         if (cantidad > productoExistente.stock) {
-            mostrarMensaje(`Cantidad excede el stock disponible para ${productoExistente.nombre}. Stock: ${productoExistente.stock}`, 'error');
-            return;
+          mostrarMensaje(
+            `Cantidad excede el stock disponible para ${productoExistente.nombre}. Stock: ${productoExistente.stock}`,
+            "error"
+          );
+          return;
         }
 
         // Verificar si el producto ya está en el carrito
-        const itemExistenteEnCarrito = carrito.find(item => item.productoId == productoId);
+        const itemExistenteEnCarrito = carrito.find(
+          (item) => item.productoId == productoId
+        );
 
         if (itemExistenteEnCarrito) {
-            // Si ya está, actualizar cantidad
-            const nuevaCantidad = itemExistenteEnCarrito.cantidad + cantidad;
-            if (nuevaCantidad > productoExistente.stock) {
-                mostrarMensaje(`La cantidad total (${nuevaCantidad}) excede el stock disponible para ${productoExistente.nombre}.`, 'error');
-                return;
-            }
-            itemExistenteEnCarrito.cantidad = nuevaCantidad;
+          // Si ya está, actualizar cantidad
+          const nuevaCantidad = itemExistenteEnCarrito.cantidad + cantidad;
+          if (nuevaCantidad > productoExistente.stock) {
+            mostrarMensaje(
+              `La cantidad total (${nuevaCantidad}) excede el stock disponible para ${productoExistente.nombre}.`,
+              "error"
+            );
+            return;
+          }
+          itemExistenteEnCarrito.cantidad = nuevaCantidad;
         } else {
-            // Si no está, agregarlo
-            carrito.push({
-                productoId: productoExistente.id,
-                nombre: productoExistente.nombre,
-                cantidad: cantidad,
-                precioUnitario: productoExistente.precio
-            });
+          // Si no está, agregarlo
+          carrito.push({
+            productoId: productoExistente.id,
+            nombre: productoExistente.nombre,
+            cantidad: cantidad,
+            precioUnitario: productoExistente.precio,
+          });
         }
 
         renderCarrito();
-        mostrarMensaje('Producto agregado al carrito');
+        mostrarMensaje("Producto agregado al carrito");
         // Limpiar selección después de agregar
-        $('#selectProductoVenta').val(null).trigger('change');
-        $('#precioUnitarioVenta').val('');
-        $('#cantidadVenta').val(1);
-    });
+        $("#selectProductoVenta").val(null).trigger("change");
+        $("#precioUnitarioVenta").val("");
+        $("#cantidadVenta").val(1);
+      });
 
-    function renderCarrito() {
-        const carritoTablaBody = $('#carritoTablaBody');
+      function renderCarrito() {
+        const carritoTablaBody = $("#carritoTablaBody");
         carritoTablaBody.empty();
         let totalVenta = 0;
 
         if (carrito.length === 0) {
-            carritoTablaBody.append('<tr><td colspan="5" class="text-center">El carrito está vacío.</td></tr>');
+          carritoTablaBody.append(
+            '<tr><td colspan="5" class="text-center">El carrito está vacío.</td></tr>'
+          );
         } else {
-            carrito.forEach((item, index) => {
-                const subtotal = item.cantidad * item.precioUnitario;
-                totalVenta += subtotal;
-                const row = `
+          carrito.forEach((item, index) => {
+            const subtotal = item.cantidad * item.precioUnitario;
+            totalVenta += subtotal;
+            const row = `
                     <tr>
                         <td>${item.nombre}</td>
                         <td>${item.cantidad}</td>
@@ -1025,116 +1492,146 @@
                         </td>
                     </tr>
                 `;
-                carritoTablaBody.append(row);
-            });
+            carritoTablaBody.append(row);
+          });
         }
-        $('#totalVentaDisplay').text(totalVenta.toFixed(2));
-    }
+        $("#totalVentaDisplay").text(totalVenta.toFixed(2));
+      }
 
-    $('#carritoTablaBody').on('click', '.eliminar-del-carrito', function() {
-        const index = $(this).data('index');
+      $("#carritoTablaBody").on("click", ".eliminar-del-carrito", function () {
+        const index = $(this).data("index");
         carrito.splice(index, 1); // Eliminar del array por índice
         renderCarrito();
-        mostrarMensaje('Producto eliminado del carrito', 'info');
-    });
+        mostrarMensaje("Producto eliminado del carrito", "info");
+      });
 
-    $('#finalizarVenta').on('click', async function() {
+      $("#finalizarVenta").on("click", async function () {
         if (carrito.length === 0) {
-            mostrarMensaje('El carrito está vacío. Agregue productos para finalizar la venta.', 'warning');
-            return;
+          mostrarMensaje(
+            "El carrito está vacío. Agregue productos para finalizar la venta.",
+            "warning"
+          );
+          return;
         }
 
         Swal.fire({
-            text: "¿Confirmar la venta con los productos en el carrito?",
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonColor: '#28a745',
-            cancelButtonColor: '#dc3545',
-            confirmButtonText: 'Sí, Finalizar',
-            cancelButtonText: 'Cancelar'
+          text: "¿Confirmar la venta con los productos en el carrito?",
+          icon: "question",
+          showCancelButton: true,
+          confirmButtonColor: "#28a745",
+          cancelButtonColor: "#dc3545",
+          confirmButtonText: "Sí, Finalizar",
+          cancelButtonText: "Cancelar",
         }).then(async (result) => {
-            if (result.isConfirmed) {
-                try {
-                    const ventaRequest = {
-                        clienteId: $('#clienteId').val(), // Enviar el clienteId seleccionado
-                        items: carrito.map(item => ({
-                            productoId: item.productoId,
-                            cantidad: item.cantidad
-                        }))
-                        // No enviamos el total, el backend lo calcula
-                    };
+          if (result.isConfirmed) {
+            try {
+              const ventaRequest = {
+                clienteId: $("#clienteId").val(), // Enviar el clienteId seleccionado
+                items: carrito.map((item) => ({
+                  productoId: item.productoId,
+                  cantidad: item.cantidad,
+                })),
+                // No enviamos el total, el backend lo calcula
+              };
 
-                    const response = await fetch(`${API_URL}/ventas`, {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(ventaRequest)
-                    });
+              const response = await fetch(`${API_URL}/ventas`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(ventaRequest),
+              });
 
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.message || 'Error al finalizar la venta');
-                    }
+              if (!response.ok) {
+                const errorData = await response.json();
+                throw new Error(
+                  errorData.message || "Error al finalizar la venta"
+                );
+              }
 
-                    const ventaFinalizada = await response.json();
-                    mostrarMensaje(`Venta # ${ventaFinalizada.id} finalizada exitosamente!`);
-                    carrito = []; // Vaciar carrito
-                    renderCarrito(); // Actualizar interfaz del carrito
-                    cargarProductos(); // Recargar tabla de productos para mostrar stock actualizado
-                    cargarTodosLosProductosActivos(); // Recargar Select2 para stock actualizado
-                } catch (error) {
-                    console.error('Error al finalizar venta:', error);
-                    mostrarMensaje('Error al finalizar venta: ' + error.message, 'error');
-                }
+              const ventaFinalizada = await response.json();
+              mostrarMensaje(
+                `Venta # ${ventaFinalizada.id} finalizada exitosamente!`
+              );
+              carrito = []; // Vaciar carrito
+              renderCarrito(); // Actualizar interfaz del carrito
+              cargarProductos(); // Recargar tabla de productos para mostrar stock actualizado
+              cargarTodosLosProductosActivos(); // Recargar Select2 para stock actualizado
+            } catch (error) {
+              console.error("Error al finalizar venta:", error);
+              mostrarMensaje(
+                "Error al finalizar venta: " + error.message,
+                "error"
+              );
             }
+          }
         });
-    });
+      });
 
-    // --- Historial de Movimiento de Producto (Modal) ---
-    $('#productosTablaBody').on('click', '.historico-producto', async function() {
-        const productId = $(this).data('id');
-        const productName = $(this).data('nombre');
-        $('#modalProductoNombre').text(productName); // Actualiza el nombre en el modal
+      // --- Historial de Movimiento de Producto (Modal) ---
+      $("#productosTablaBody").on(
+        "click",
+        ".historico-producto",
+        async function () {
+          const productId = $(this).data("id");
+          const productName = $(this).data("nombre");
+          $("#modalProductoNombre").text(productName); // Actualiza el nombre en el modal
 
-        try {
-            const response = await fetch(`${API_URL}/ventas/by-product/${productId}`);
+          try {
+            const response = await fetch(
+              `${API_URL}/ventas/by-product/${productId}`
+            );
             if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
+              throw new Error(`HTTP error! status: ${response.status}`);
             }
             const historico = await response.json(); // Lista de VentaItemResponse
 
-            const historicoMovimientoTablaBody = $('#historicoMovimientoTablaBody');
-            const totalMovimientoDisplay = $('#totalMovimientoDisplay');
+            const historicoMovimientoTablaBody = $(
+              "#historicoMovimientoTablaBody"
+            );
+            const totalMovimientoDisplay = $("#totalMovimientoDisplay");
             historicoMovimientoTablaBody.empty();
             let totalMovimiento = 0;
 
             if (historico.length === 0) {
-                historicoMovimientoTablaBody.append('<tr><td colspan="5" class="text-center">No hay movimientos para este producto.</td></tr>');
+              historicoMovimientoTablaBody.append(
+                '<tr><td colspan="5" class="text-center">No hay movimientos para este producto.</td></tr>'
+              );
             } else {
-                historico.forEach(item => {
-                    const subtotal = item.cantidadVendida * item.precioUnitarioVenta;
-                    totalMovimiento += subtotal;
-                    const row = historicoMovimientoTablaBody[0].insertRow();
-                    row.insertCell().textContent = item.ventaId;
-                    row.insertCell().textContent = new Date(item.fechaVenta).toLocaleString();
-                    row.insertCell().textContent = item.cantidadVendida;
-                    row.insertCell().textContent = item.precioUnitarioVenta.toFixed(2);
-                    row.insertCell().textContent = subtotal.toFixed(2);
-                });
+              historico.forEach((item) => {
+                const subtotal =
+                  item.cantidadVendida * item.precioUnitarioVenta;
+                totalMovimiento += subtotal;
+                const row = historicoMovimientoTablaBody[0].insertRow();
+                row.insertCell().textContent = item.ventaId;
+                row.insertCell().textContent = new Date(
+                  item.fechaVenta
+                ).toLocaleString();
+                row.insertCell().textContent = item.cantidadVendida;
+                row.insertCell().textContent =
+                  item.precioUnitarioVenta.toFixed(2);
+                row.insertCell().textContent = subtotal.toFixed(2);
+              });
             }
             totalMovimientoDisplay.textContent = totalMovimiento.toFixed(2);
 
-            const movimientoModal = new bootstrap.Modal(document.getElementById('movimientoProductoModal'));
+            const movimientoModal = new bootstrap.Modal(
+              document.getElementById("movimientoProductoModal")
+            );
             movimientoModal.show();
-
-        } catch (error) {
-            console.error('Error al cargar histórico de movimiento:', error);
-            $('#historicoMovimientoTablaBody').html(`<tr><td colspan="5" class="text-center text-danger">Error al cargar histórico: ${error.message}</td></tr>`);
-            mostrarMensaje('Error al cargar histórico de movimiento: ' + error.message, 'error');
+          } catch (error) {
+            console.error("Error al cargar histórico de movimiento:", error);
+            $("#historicoMovimientoTablaBody").html(
+              `<tr><td colspan="5" class="text-center text-danger">Error al cargar histórico: ${error.message}</td></tr>`
+            );
+            mostrarMensaje(
+              "Error al cargar histórico de movimiento: " + error.message,
+              "error"
+            );
+          }
         }
-    });
+      );
 
-    // --- Inicialización al cargar la página ---
-    $(document).ready(async () => {
+      // --- Inicialización al cargar la página ---
+      $(document).ready(async () => {
         // Cargar datos para todas las pestañas al inicio
         await cargarProductos();
         await cargarClientes(); // Cargar clientes al inicio
@@ -1142,90 +1639,111 @@
         inicializarSelect2Productos();
 
         // Listener para cuando se cambia de pestaña, para recargar los datos
-        $('button[data-bs-toggle="tab"]').on('shown.bs.tab', function (e) {
-            const targetTabId = $(e.target).attr('data-bs-target'); // e.g., "#clientes"
-            if (targetTabId === '#productos') {
-                cargarProductos(currentPageProducto, 10, currentSearchTermProducto);
-            } else if (targetTabId === '#clientes') {
-                cargarClientes(currentPageCliente, 10, currentSearchTermCliente);
-            }
-            // Para la pestaña de ventas, no hay recarga inicial ya que se basa en `allActiveProducts`
-            // El historial de ventas se carga por producto desde el botón "Histórico"
+        $('button[data-bs-toggle="tab"]').on("shown.bs.tab", function (e) {
+          const targetTabId = $(e.target).attr("data-bs-target"); // e.g., "#clientes"
+          if (targetTabId === "#productos") {
+            cargarProductos(currentPageProducto, 10, currentSearchTermProducto);
+          } else if (targetTabId === "#clientes") {
+            cargarClientes(currentPageCliente, 10, currentSearchTermCliente);
+          }
+          // Para la pestaña de ventas, no hay recarga inicial ya que se basa en `allActiveProducts`
+          // El historial de ventas se carga por producto desde el botón "Histórico"
         });
-    });
+      });
 
-    async function cargarVentas(filtroCliente = '', filtroProducto = '', filtroFecha = '') {
+      async function cargarVentas(
+        filtroCliente = "",
+        filtroProducto = "",
+        filtroFecha = ""
+      ) {
         try {
-            let url = `${API_URL}/ventas/historial?`;
-            if (filtroCliente) url += `cliente=${encodeURIComponent(filtroCliente)}&`;
-            if (filtroProducto) url += `producto=${encodeURIComponent(filtroProducto)}&`;
-            if (filtroFecha) url += `fecha=${encodeURIComponent(filtroFecha)}&`;
-            const response = await fetch(url);
-            if (!response.ok) throw new Error('Error al cargar ventas');
-            const ventas = await response.json();
-            console.log('Ventas recibidas:', ventas); // Depuración
-            renderVentas(ventas);
+          let url = `${API_URL}/ventas/historial?`;
+          if (filtroCliente)
+            url += `cliente=${encodeURIComponent(filtroCliente)}&`;
+          if (filtroProducto)
+            url += `producto=${encodeURIComponent(filtroProducto)}&`;
+          if (filtroFecha) url += `fecha=${encodeURIComponent(filtroFecha)}&`;
+          const response = await fetch(url);
+          if (!response.ok) throw new Error("Error al cargar ventas");
+          const ventas = await response.json();
+          console.log("Ventas recibidas:", ventas); // Depuración
+          renderVentas(ventas);
         } catch (error) {
-            $('#ventasTablaBody').html(`<tr><td colspan="5" class="text-center text-danger">${error.message}</td></tr>`);
+          $("#ventasTablaBody").html(
+            `<tr><td colspan="5" class="text-center text-danger">${error.message}</td></tr>`
+          );
         }
-    }
-    function renderVentas(ventas) {
-        const tbody = $('#ventasTablaBody');
+      }
+      function renderVentas(ventas) {
+        const tbody = $("#ventasTablaBody");
         tbody.empty();
         if (!ventas || ventas.length === 0) {
-            tbody.append('<tr><td colspan="5" class="text-center">No hay ventas para mostrar.</td></tr>');
-            return;
+          tbody.append(
+            '<tr><td colspan="5" class="text-center">No hay ventas para mostrar.</td></tr>'
+          );
+          return;
         }
-        ventas.forEach(v => {
-            const productos = v.items.map(i => `${i.productoNombre} (x${i.cantidad})`).join(', ');
-            const row = `<tr>
+        ventas.forEach((v) => {
+          const productos = v.items
+            .map((i) => `${i.productoNombre} (x${i.cantidad})`)
+            .join(", ");
+          const row = `<tr>
                 <td>${v.id}</td>
                 <td>${v.clienteNombre}</td>
                 <td>${new Date(v.fecha).toLocaleString()}</td>
                 <td>${productos}</td>
                 <td>${v.total.toFixed(2)}</td>
             </tr>`;
-            tbody.append(row);
+          tbody.append(row);
         });
-    }
-    $('#btnFiltrarVentas').on('click', function() {
-        const cliente = $('#filtroCliente').val();
-        const producto = $('#filtroProducto').val();
-        const fecha = $('#filtroFecha').val();
-        console.log('Filtro aplicado:', { cliente, producto, fecha }); // Depuración
+      }
+      $("#btnFiltrarVentas").on("click", function () {
+        const cliente = $("#filtroCliente").val();
+        const producto = $("#filtroProducto").val();
+        const fecha = $("#filtroFecha").val();
+        console.log("Filtro aplicado:", { cliente, producto, fecha }); // Depuración
         cargarVentas(cliente, producto, fecha);
-    });
-    // Cargar ventas al entrar a la pestaña
-    $('button[data-bs-target="#reporteventas"]').on('shown.bs.tab', function () {
-        cargarVentas();
-    });
-
-    // --- Cargar clientes activos para el select de ventas ---
-    async function cargarClientesActivosParaVenta() {
-        try {
-            const response = await fetch(`${API_URL}/clientes?page=0&size=1000&estado=1`);
-            if (!response.ok) throw new Error('Error al cargar clientes activos');
-            const data = await response.json();
-            const clientes = data.content.filter(c => c.estado === 1);
-            const select = $('#selectClienteVenta');
-            select.empty();
-            select.append('<option value="">Seleccione un cliente</option>');
-            clientes.forEach(cliente => {
-                select.append(`<option value="${cliente.id}">${cliente.nombre} ${cliente.apellido}</option>`);
-            });
-        } catch (error) {
-            console.error('Error al cargar clientes activos para venta:', error);
-            $('#selectClienteVenta').html('<option value="">Error al cargar clientes</option>');
+      });
+      // Cargar ventas al entrar a la pestaña
+      $('button[data-bs-target="#reporteventas"]').on(
+        "shown.bs.tab",
+        function () {
+          cargarVentas();
         }
-    }
-    // Guardar el id del cliente seleccionado
-    $('#selectClienteVenta').on('change', function() {
-        $('#clienteId').val($(this).val());
-    });
-    // Inicializar el select de clientes al entrar a la pestaña de ventas
-    $('button[data-bs-target="#ventas"]').on('shown.bs.tab', function () {
+      );
+
+      // --- Cargar clientes activos para el select de ventas ---
+      async function cargarClientesActivosParaVenta() {
+        try {
+          const response = await fetch(
+            `${API_URL}/clientes?page=0&size=1000&estado=1`
+          );
+          if (!response.ok) throw new Error("Error al cargar clientes activos");
+          const data = await response.json();
+          const clientes = data.content.filter((c) => c.estado === 1);
+          const select = $("#selectClienteVenta");
+          select.empty();
+          select.append('<option value="">Seleccione un cliente</option>');
+          clientes.forEach((cliente) => {
+            select.append(
+              `<option value="${cliente.id}">${cliente.nombre} ${cliente.apellido}</option>`
+            );
+          });
+        } catch (error) {
+          console.error("Error al cargar clientes activos para venta:", error);
+          $("#selectClienteVenta").html(
+            '<option value="">Error al cargar clientes</option>'
+          );
+        }
+      }
+      // Guardar el id del cliente seleccionado
+      $("#selectClienteVenta").on("change", function () {
+        $("#clienteId").val($(this).val());
+      });
+      // Inicializar el select de clientes al entrar a la pestaña de ventas
+      $('button[data-bs-target="#ventas"]').on("shown.bs.tab", function () {
         cargarClientesActivosParaVenta();
-    });
-</script>
-</body>
-</html> 
+      });
+    </script>
+  </body>
+</html>
